@@ -82,6 +82,10 @@
       </div>
     </div>
 
+    <div v-if="hasBounds" class="stop-button-container">
+      <div class="stop-button" @click="silence()"></div>
+    </div>
+
     <div v-if="hasBounds" class="speed-input">
       <NumberInput
         ref="speed-input"
@@ -133,10 +137,6 @@
         @input="onEndInput"
       />
     </div>
-
-    <div v-if="hasBounds" class="stop-button-container">
-      <div class="stop-button" @click="silence()"></div>
-    </div>
   </div>
 </div>
 </template>
@@ -148,7 +148,8 @@
   align-items: center;
 }
 .scroll-bar-container.vertical-layout .full-width{
-  width: var(--score-width)
+  width: 100%;
+  max-width: var(--score-width)
 }
 .scroll-bar-container.horizontal-layout {
   display: flex;
@@ -282,11 +283,17 @@ export default {
       console.log(this.size);
       return this.size;
     },
+    // this is executed only once : it seems that this.$refs should never be
+    // accessed from computed properties
     boundingRect() {
+      console.log('compute bounding rect');
       return this.$refs['scroll-bar'].getBoundingClientRect();
     },
+    // see above : this will always return 0
     cursorRadius() {
       if (!this.boundingRect) { return 0; }
+      // console.log('boundingRect exists');
+      // console.log(this.boundingRect);
       // return this.boundingRect.height * 0.5;
       return this.boundingRect.height * 0.5 * (this.layout.cursorSize / this.layout.height);
     },
@@ -322,11 +329,13 @@ export default {
     document.addEventListener('mousemove', this.drag);
     document.addEventListener('mouseup', this.endDrag);
     document.addEventListener('keydown', this.onKeyDown);
+    document.addEventListener('resize', this.onResize);
   },
   beforeUnmount() {
     document.removeEventListener('mousemove', this.drag);
     document.removeEventListener('mouseup', this.endDrag);
     document.removeEventListener('keydown', this.onKeyDown);
+    document.removeEventListener('resize', this.onResize);
   },
   methods: {
     onStartInput(e) {
@@ -379,7 +388,10 @@ export default {
     drag(e) {
       if (this.dragging === null) return;
 
-      const { x, width } = this.boundingRect;
+      // const { x, width } = this.boundingRect;
+      // computed properties should never access this.$refs, so we access the
+      // $refs directly from this method
+      const { x, width } = this.$refs['scroll-bar'].getBoundingClientRect();
 
       if (this.dragging === 'start' || this.dragging === 'end') {
         let position = (e.clientX - this.draggingOffset - x) / (width - 2 * this.cursorRadius);
