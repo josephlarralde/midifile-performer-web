@@ -28,10 +28,15 @@ html, body {
   height: 100%;
   user-select: none;
   font-family: var(--global-font-family);
+  display: flex;
+  flex-direction: column;
 }
 
 #app {
-  position: relative;
+  /* position: relative; */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .pop-up {
@@ -60,6 +65,10 @@ html, body {
 
 #app-menu {
   margin-bottom: 15px;
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 1000;
 }
 
 #app-content {
