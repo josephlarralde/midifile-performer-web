@@ -11,7 +11,7 @@
         :value="value"
         :step="step"
         @keydown="onKeyDown"
-        @input="onInput"/>
+        @change="onChange"/>
     </div>
   </div>
 </template>
@@ -20,11 +20,11 @@
 input {
   user-select: none;
 }
-input::selection {
+/* input::selection {
   caret-color: transparent;
   color: black;
   background: transparent;
-}
+} */
 .input-label {
   margin-bottom: 8px;
 }
@@ -59,11 +59,26 @@ export default {
     // 3. Ensure that at most one decimal point is ever present in the input.
 
     onKeyDown(e) {
-      e.stopPropagation(); // 1. Prevent these inputs from bubbling and triggering the MFP
+      // on Tab, let the event bubble and allow focus on next element
+
+      if (e.key == 'Tab') return;
+
+      // on Enter, let the event bubble and force blur on the input
+
+      if (e.key == 'Enter') {
+        e.target.blur();
+        return;
+      }
+      
+      // otherwise :
+
+      // 1. Prevent these inputs from bubbling and triggering the MFP
+
+      e.stopPropagation();
 
       // 2. Exclude any key that doesn't make sense with the number input.
 
-      if(!this.validInputKeys.includes(e.key)) {
+      if (!this.validInputKeys.includes(e.key)) {
         e.preventDefault();
         return;
       }
@@ -106,7 +121,7 @@ export default {
       this.lastKeyPressed = e.key
       this.valueOnKeyDown = e.target.valueAsNumber
     },
-    onInput(e) {
+    onChange(e) {
 
       // Decimal point compliance edge case :
       // Ensure that scrolling up or down (which never produces trailing decimal points like 1.)
