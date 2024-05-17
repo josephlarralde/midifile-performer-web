@@ -72,6 +72,8 @@ import LoadingScreen from '../components/LoadingScreen.vue';
 export default {
   inject: [ 'performer', 'ioctl', 'DEFAULT_IO_ID', 'NUMBER_OF_KEYS', 'NUMBER_OF_SOUNDFILES' ],
   components: { BachPrelude, Keyboard, ScrollBar, LoadingScreen },
+  // doesn't have any effect. FIXME : create a state variable in the store instead of using an event
+  // emits: [ 'canPerform' ],
   computed: {
     ...mapState([
       'firstStepsMidiFile',

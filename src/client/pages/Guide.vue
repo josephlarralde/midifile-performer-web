@@ -238,11 +238,22 @@
     font-weight: bold;
     padding-left: 2.8em;
   }
+  
+  /*
   .toc-wrapper::v-deep a {
     color: #666;
     text-decoration: none;
   }
   .toc-wrapper::v-deep a:hover, .toc-wrapper::v-deep a:active {
+    color: var(--button-blue)
+  }
+  */
+
+  :deep(.toc-wrapper) a {
+    color: #666;
+    text-decoration: none;
+  }
+  :deep(.toc-wrapper) a:hover, :deep(.toc-wrapper) a:active {
     color: var(--button-blue)
   }
 
