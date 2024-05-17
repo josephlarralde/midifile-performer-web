@@ -7,16 +7,14 @@
   --hint-blue: #36A9CE;
   --button-blue: rgb(2,167,240);
   --play-perform-green: rgb(88, 226, 142);
-  /*--button-blue: #6b93ee;*/
   --light-button-blue: rgba(2, 167, 240, 0.9);
 
   --menubar-height: 50px;
   --content-width: 800px;
-  /*--menu-width: 700px;*/
   --score-width: 650px;
 
-  --global-font: Times New Roman, serif;
-  /*--global-font: sans-serif;*/
+  /* --global-font: Times New Roman, serif; */
+  --global-font: sans-serif;
 
   --youtube-video-h-w-ratio: calc(calc(315 / 560) * 100%);
 }
@@ -33,16 +31,15 @@ html, body {
 }
 
 #app {
-  /* position: relative; */
   display: flex;
   flex-direction: column;
   height: 100%;
+  text-align: center;
 }
 
 .pop-up {
   z-index: 100000;
   position: absolute;
-  /*top: var(--menubar-height);*/
   top:0;
   right:0;
   bottom:0;
