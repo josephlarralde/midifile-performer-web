@@ -6,6 +6,25 @@
     Using v-show won't work because it would make the width 0
     (and sheet music needs an actual width to render)-->
 
+    <div class="visualizer-selector" v-if="!mfpMidiFile.isMidi && !!mfpMidiFile.buffer">
+      <img :src="`pics/piano_roll_icon_${
+        pianoRollSelected ?
+          (currentMode === 'silent' ?
+            'enabled_silent' : 'enabled_play_perform'
+          ) :
+          'disabled'
+        }.png`"
+        @click="selectedVisualizer = 'pianoRoll'"/>
+      <img :src="`pics/music_notes_icon_${
+        sheetMusicSelected ?
+          (currentMode === 'silent' ?
+            'enabled_silent' : 'enabled_play_perform'
+          ) :
+          'disabled'
+        }.png`"
+        @click="selectedVisualizer = 'sheetMusic'"/>
+    </div>
+
     <div class="mfp-container" :class="displayLoadingScreen ? 'hide' : 'show'"
       @dragover="onDragOver"
       @drop="onDrop">
@@ -15,25 +34,6 @@
         <p>{{ $t('midiFilePerformer.contextualization.secondLine') }}</p>
         <p>{{ $t('midiFilePerformer.contextualization.thirdLine') }}</p>
       </span>
-
-      <div class="visualizer-selector" v-if="!mfpMidiFile.isMidi && !!mfpMidiFile.buffer">
-        <img :src="`pics/piano_roll_icon_${
-          pianoRollSelected ?
-            (currentMode === 'silent' ?
-              'enabled_silent' : 'enabled_play_perform'
-            ) :
-            'disabled'
-          }.png`"
-          @click="selectedVisualizer = 'pianoRoll'"/>
-        <img :src="`pics/music_notes_icon_${
-          sheetMusicSelected ?
-            (currentMode === 'silent' ?
-              'enabled_silent' : 'enabled_play_perform'
-            ) :
-            'disabled'
-          }.png`"
-          @click="selectedVisualizer = 'sheetMusic'"/>
-      </div>
 
       <SheetMusic
         class="sheet-music"
@@ -168,6 +168,7 @@
   align-items: center;
   overflow: auto;
   margin-bottom: 1em;
+  flex-grow: 1;
   /* min-height: 500px; */
 }
 .mfp-container.hide {
@@ -251,11 +252,6 @@ span.link {
   display: inline-block;
   width: 100%;
 }
-/*
-.piano-roll, .sheet-music {
-  height: 70vh; // Dev approximation, adjust with feedback
-}
-*/
 .piano-roll.hide, .sheet-music.hide {
   position: absolute;
   top: 0;
@@ -302,15 +298,17 @@ import { mapMutations, mapState } from 'vuex';
 import IOManager from '../components/IOManager.vue';
 import Keyboard from '../components/Keyboard.vue';
 import ScrollBar from '../components/ScrollBar.vue';
-import LoadingScreen from '../components/LoadingScreen.vue'
-import PianoRoll from '../components/PianoRoll.vue'
-import SheetMusic from '../components/SheetMusic.vue'
+import LoadingScreen from '../components/LoadingScreen.vue';
+import PianoRoll from '../components/PianoRoll.vue';
+import SheetMusic from '../components/SheetMusic.vue';
 
 const noInputFileMsg = 'Aucun fichier sélectionné';
 
 export default {
   inject: [ 'ioctl', 'performer', 'parseMusicXml', 'getRootFileFromMxl', 'defaultMidiInput', 'defaultKeyboardVelocities', 'DEFAULT_IO_ID', 'NUMBER_OF_KEYS', 'NUMBER_OF_SOUNDFILES' ],
   components: { IOManager, Keyboard, ScrollBar, LoadingScreen, PianoRoll, SheetMusic },
+  // doesn't have any effect. FIXME : create a state variable in the store instead of using an event
+  // emits: [ 'canPerform' ],
   data() {
     return {
       selectedVisualizer: "pianoRoll",
