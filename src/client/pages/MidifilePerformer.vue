@@ -160,6 +160,15 @@
   justify-content: center;
   align-items: center;
 }
+#bottom-controls {
+  /* position: sticky; */
+  /* bottom: 0; */
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 1em;
+}
 .mfp-container {
   /* position: absolute; */
   display: flex;
@@ -191,6 +200,7 @@
   display: flex;
   justify-content: space-between;
   margin-bottom: 1em;
+  padding: 0 1em;
 }
 .visualizer-selector img {
   width: 5%;
@@ -259,15 +269,6 @@ span.link {
   z-index: -100;
   opacity: 0;
   height: 0;
-}
-#bottom-controls {
-  /* position: sticky; */
-  bottom: 0;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0 1em;
 }
 .keyboard {
   max-width: var(--score-width);

@@ -7,6 +7,7 @@
 <style scoped>
 .sheet-music-container {
   width: var(--score-width);
+  max-width: 100vw;
   height: fit-content;
   overflow: auto;
   scroll-behavior: smooth;
@@ -88,6 +89,10 @@ export default {
         // The *entire page* is scrolled as a result.
         // This is not what we want.
         // followCursor: true
+        drawCredits: false,
+        drawTitle: true,
+        drawPartNames: false,
+        drawPartAbbreviations: true,
       },
 
       drawn: false,
